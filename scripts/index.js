@@ -8,7 +8,7 @@ function playRound(playerSelection, computerSelection) {
   playerSelection = playerSelection.toLowerCase().trim();
 
   if (!options.some((item) => item == playerSelection)) {
-    return "Please enter a valid option (rock, paper, scissor)";
+    return "Please enter a valid option (rock, paper, scissor). This round will not be considered.";
   }
   return evaluateBattle(playerSelection, computerSelection);
 }
