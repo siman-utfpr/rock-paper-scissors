@@ -30,3 +30,24 @@ function evaluateBattle(playerSelection, computerSelection) {
     return loseTemplase;
   }
 }
+
+function game() {
+  let userScore = 0;
+  let computerScore = 0;
+  for (let i = 0; i < 5; i++) {
+    let playerSelection = prompt("Rock, paper or scissor?");
+    let computerSelection = computerPlay();
+    let result = playRound(playerSelection, computerSelection);
+    if (result.includes("WIN")) {
+      userScore++;
+    } else if (result.includes("LOSE")) {
+      computerScore++;
+    } else if (!result.includes("DRAW")) {
+      i--;
+    }
+    console.log(result);
+  }
+  console.log(
+    "FINAL SCORE: \nUser: " + userScore + "\nComputer: " + computerScore
+  );
+}
