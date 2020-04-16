@@ -1,0 +1,135 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: rgb(66, 66, 66);
+  margin: 0;
+  color: white;
+  overflow: hidden;
+}
+
+#upper-div {
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+}
+
+.score {
+  width: 15vw;
+  text-align: center;
+}
+
+.score label {
+  font-size: 20px;
+}
+
+.battle {
+  width: 70vw;
+  display: grid;
+  grid-template-areas: "user vs computer";
+  grid-template-columns: 40% 20% 40%;
+  font-size: 30px;
+  padding-top: 40px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.color-winner {
+  color: green;
+}
+
+.color-loser {
+  color: red;
+}
+
+.animate-left {
+  animation-name: left-to-right;
+  animation-duration: 0.8s;
+  animation-timing-function: linear;
+}
+
+.animate-right {
+  animation-name: right-to-left;
+  animation-duration: 0.8s;
+  animation-timing-function: linear;
+}
+
+@keyframes left-to-right {
+  0% {
+    margin-right: 100%;
+  }
+
+  85% {
+    margin-right: -100%;
+  }
+
+  100% {
+    margin-right: 0px;
+  }
+}
+
+@keyframes right-to-left {
+  0% {
+    margin-left: 100%;
+  }
+
+  85% {
+    margin-left: -100%;
+  }
+
+  100% {
+    margin-left: 0px;
+  }
+}
+
+#result-area {
+  height: 200px;
+  text-align: center;
+}
+
+#button-ok {
+  background-color: white;
+  color: red;
+  border: 1px solid gold;
+  padding: 10px 40px;
+  font-size: 25px;
+}
+
+#game-area {
+  padding: 50px;
+  text-align: center;
+}
+
+#rock:not(:disabled) {
+  background-color: red;
+}
+
+#paper:not(:disabled) {
+  background-color: blue;
+}
+
+#scissor:not(:disabled) {
+  background-color: green;
+}
+
+.game-button {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  padding: 15px;
+  border: 3px solid black;
+  cursor: pointer;
+  margin: 0 30px;
+  user-select: none;
+}
+
+.game-button:disabled {
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: unset;
+}
+
+.hidden-item {
+  visibility: hidden;
+}

@@ -1,53 +1,118 @@
+addEventListeners();
+document.getElementById("rock").focus();
+
 function computerPlay() {
   let options = ["rock", "paper", "scissor"];
   return options[Math.floor(Math.random() * options.length)];
 }
 
-function playRound(playerSelection, computerSelection) {
-  let options = ["rock", "paper", "scissor"];
-  playerSelection = playerSelection.toLowerCase().trim();
-
-  if (!options.some((item) => item == playerSelection)) {
-    return "Please enter a valid option (rock, paper, scissor). This round will not be considered.";
-  }
-  return evaluateBattle(playerSelection, computerSelection);
-}
-
-function evaluateBattle(playerSelection, computerSelection) {
-  let matchTemplate = `${playerSelection} vs ${computerSelection}!`;
-  let winTemplate = `${matchTemplate} You WIN!`;
-  let loseTemplase = `${matchTemplate} You LOSE!`;
-  let drawTemplate = `${matchTemplate} DRAW!`;
-
-  if (playerSelection == computerSelection) return drawTemplate;
+/*
+  returns 1 for player win, 0 for draw and -1 for computer win
+*/
+function decideWinner(playerSelection, computerSelection) {
+  if (playerSelection == computerSelection) return 0;
   if (
     (playerSelection == "rock" && computerSelection == "scissor") ||
     (playerSelection == "paper" && computerSelection == "rock") ||
     (playerSelection == "scissor" && computerSelection == "paper")
   ) {
-    return winTemplate;
+    return 1;
   } else {
-    return loseTemplase;
+    return -1;
   }
 }
 
-function game() {
-  let userScore = 0;
-  let computerScore = 0;
-  for (let i = 0; i < 5; i++) {
-    let playerSelection = prompt("Rock, paper or scissor?");
-    let computerSelection = computerPlay();
-    let result = playRound(playerSelection, computerSelection);
-    if (result.includes("WIN")) {
-      userScore++;
-    } else if (result.includes("LOSE")) {
-      computerScore++;
-    } else if (!result.includes("DRAW")) {
-      i--;
-    }
-    console.log(result);
+function addEventListeners() {
+  let buttons = document.getElementsByClassName("game-button");
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener("click", playRound);
   }
-  console.log(
-    "FINAL SCORE: \nUser: " + userScore + "\nComputer: " + computerScore
+  document.getElementById("button-ok").addEventListener("click", newRound);
+}
+
+function playRound(evt) {
+  let selection = evt.target.id;
+  let computerSelection = computerPlay();
+
+  let playerLabel = document.getElementById("player-selection");
+  playerLabel.textContent = selection;
+  playerLabel.classList.add("animate-left");
+
+  let computerLabel = document.getElementById("computer-selection");
+  computerLabel.textContent = computerSelection;
+  computerLabel.classList.add("animate-right");
+
+  toggleGameButtonsEnable();
+
+  let result = decideWinner(selection, computerSelection);
+  displayResults(result);
+}
+
+function toggleGameButtonsEnable() {
+  let buttons = document.getElementsByClassName("game-button");
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].toggleAttribute("disabled");
+  }
+}
+
+function displayResults(result) {
+  let resultText;
+  let winner;
+  setTimeout(() => {
+    switch (result) {
+      case 1:
+        resultText = "You WIN!";
+        winner = "player";
+        document
+          .getElementById("player-selection")
+          .classList.toggle("color-winner");
+        document
+          .getElementById("computer-selection")
+          .classList.toggle("color-loser");
+
+        break;
+      case 0:
+        resultText = "DRAW!";
+        winner = "";
+        break;
+      case -1:
+        resultText = "You LOSE!";
+        winner = "computer";
+        document
+          .getElementById("player-selection")
+          .classList.toggle("color-loser");
+        document
+          .getElementById("computer-selection")
+          .classList.toggle("color-winner");
+        break;
+    }
+    if (winner) {
+      let winnerLabel = document.getElementById(winner + "-score");
+      winnerLabel.textContent = +winnerLabel.textContent + 1;
+    }
+  }, 700);
+
+  setTimeout(() => {
+    document.getElementById("result-area").classList.toggle("hidden-item");
+    document.getElementById("result").textContent = resultText;
+    document.getElementById("button-ok").focus();
+  }, 800);
+}
+
+function newRound() {
+  document.getElementById("result-area").classList.toggle("hidden-item");
+  toggleGameButtonsEnable();
+  let playerLabel = document.getElementById("player-selection");
+  playerLabel.textContent = "";
+  playerLabel.classList.remove("animate-left", "color-winner", "color-loser");
+
+  let computerLabel = document.getElementById("computer-selection");
+  computerLabel.textContent = "";
+  computerLabel.classList.remove(
+    "animate-right",
+    "color-winner",
+    "color-loser"
   );
+
+  document.getElementById("rock").focus();
 }
