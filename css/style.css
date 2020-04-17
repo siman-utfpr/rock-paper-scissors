@@ -36,10 +36,12 @@ body {
 }
 
 .color-winner {
+  transition: color 0.5s ease-in;
   color: green;
 }
 
 .color-loser {
+  transition: color 0.5s ease-in;
   color: red;
 }
 
